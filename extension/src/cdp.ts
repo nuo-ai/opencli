@@ -92,8 +92,10 @@ export async function ensureAttached(tabId: number, aggressiveRetry: boolean = f
             break; // Don't retry if URL became un-debuggable
           }
         } catch {
+          // Tab is gone — don't fail early here.
+          // Later retry layers can re-resolve a fresh automation tab/window.
           lastError = `Tab ${tabId} no longer exists`;
-          break;
+          // Don't break; fall through to retry
         }
       }
     }
