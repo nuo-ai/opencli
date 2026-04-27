@@ -421,6 +421,16 @@ function clickSendButtonScript() {
     return `
     (() => {
       ${buildDoubaoComposerLocatorScript()}
+      const directSendButton = document.querySelector('button#flow-end-msg-send');
+      if (directSendButton instanceof HTMLElement && isVisible(directSendButton)) {
+        const disabled = directSendButton.getAttribute('disabled') !== null
+          || directSendButton.getAttribute('aria-disabled') === 'true';
+        if (!disabled) {
+          directSendButton.click();
+          return true;
+        }
+      }
+
       const composer = findComposer();
       if (!(composer instanceof HTMLElement)) return false;
 
